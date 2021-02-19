@@ -1,5 +1,9 @@
-.loading-container {
-  display: flex;
-  background-color: blue;
-  height: 100%;
+.loader {
+  div{
+    background: #16c79a !important;
+    background: #16c79a;
+    div {
+      box-shadow: #16c79a 0px 0px 10px, #16c79a 0px 0px 5px !important;
+    }
+  }
 }

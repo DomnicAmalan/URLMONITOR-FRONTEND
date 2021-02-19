@@ -1,11 +1,17 @@
-import LandingPage from '../../pages/LandingPage';
+import LandingPage from 'pages/LandingPage';
+import Dashboard from 'pages/Dashboard';
 
-const prefix = '/home';
+const prefix = '/app';
 
 const routes = [
   {
     path: `${prefix}`,
     component: LandingPage,
+    exact: true,
+  },
+  {
+    path: `${prefix}/dashboard`,
+    component: Dashboard,
     exact: true,
   },
 ];

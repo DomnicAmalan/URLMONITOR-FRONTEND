@@ -61,7 +61,9 @@ module.exports = {
   resolve: {
     alias: {
       Assets: path.resolve(__dirname, './src/assets'),
-      atoms: path.resolve(__dirname, './src/components/atoms/index')
+      atoms: path.resolve(__dirname, './src/components/atoms/index'),
+      hooks: path.resolve(__dirname, './src/hooks/index'),
+      pages: path.resolve(__dirname, './src/pages')
     },
   },
 };

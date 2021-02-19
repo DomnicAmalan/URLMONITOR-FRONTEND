@@ -3,12 +3,6 @@
   "authbuttons": {
     "google": {
       "title": "Continue in with google"
-    },
-    "facebook": {
-      "title": "Continue with facebook"
-    },
-    "snapchat": {
-      "title": "Continue with snapchat"
     }
   }
 }

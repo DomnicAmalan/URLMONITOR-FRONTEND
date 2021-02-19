@@ -45,7 +45,6 @@ exports.findOne = (req, res) => {
       res.status(200).send(user);
     })
     .catch((err) => {
-      
       return res.status(500).send({
         message: "Error retrieving user with id " + req.body.email,
       });
@@ -55,7 +54,7 @@ exports.findOne = (req, res) => {
 exports.createJWTToken = async(req, res) => {
   const checker = req.body.email
   const user = await User.findOne({email: checker});
-  if (bcrypt.compareSync(checker, "amalandomnic@gmail.com")) {
+  if (bcrypt.compareSync(checker, checker)) {
     console.log("iiii")
     const token = jwt.sign({ user }, "yourSecretKey", {
       expiresIn: "24h"

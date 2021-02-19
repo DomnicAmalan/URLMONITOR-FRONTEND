@@ -4,6 +4,7 @@ import Backend from 'i18next-xhr-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import translationEN from './locate/en/translate.json';
 import translationTA from './locate/ta/translate.json';
+import translationML from './locate/ml/translation.json'
 
 const fallbackLng = ['en'];
 const availableLanguages = ['en', 'ta'];
@@ -15,6 +16,9 @@ const resources = {
   ta: {
     translation: translationTA,
   },
+  ml: {
+    translation: translationML
+  }
 };
 const userLang = navigator.language || navigator.userLanguage;
 i18n
