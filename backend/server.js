@@ -1,27 +1,41 @@
 let express = require('express');
+const router = express.Router();
 let bodyParser = require('body-parser');
 let mongoose = require('mongoose');
+const cors = require('cors')
 
 let app = express();
 
 var port = process.env.PORT || 3000;
 
-let apiRoutes = require("./routes/landing");
-
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 
+app.use(cors())
+
 app.use(bodyParser.json());
 
-app.use('/api', apiRoutes);
+app.use("/", router);
+app.use("/users", require("./routes/userRoutes"));
+
+mongoose.connect('mongodb+srv://domnic:0308SDAssa@cluster0.wptgp.mongodb.net/surveysp?retryWrites=true&w=majority', 
+  {useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true
+  }, 
+  (err) => {
+      if (!err) {
+          console.log('Successfully Established Connection with MongoDB')
+      }
+      else {
+          console.log('Failed to Establish Connection with MongoDB with Error: '+ err)
+      }
+  }
+);
 
 var db = mongoose.connection;
-
-if(!db)
-    console.log("Error connecting db")
-else
-    console.log("Db connected successfully")
 
 app.listen(port, function () {
      console.log("Running Survery Sparrow Ping on port " + port);
