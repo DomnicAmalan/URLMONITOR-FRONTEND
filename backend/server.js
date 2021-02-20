@@ -9,16 +9,16 @@ let app = express();
 
 var port = process.env.PORT || 3000;
 
+app.use(cors())
+
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-app.use(cors())
-
 app.use(bodyParser.json());
 
 app.use("/", router);
-app.use("/users", require("./routes/userRoutes"));
+app.use("/api/users", require("./routes/userRoutes"));
 
 mongoose.connect('mongodb+srv://domnic:0308SDAssa@cluster0.wptgp.mongodb.net/surveysp?retryWrites=true&w=majority', 
   {useNewUrlParser: true,

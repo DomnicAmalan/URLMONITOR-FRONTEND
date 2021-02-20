@@ -8,7 +8,9 @@ function setPassword(value) {
 const UserSchema = new mongoose.Schema(
   {
     email: {
-      type: { type: String, unique: true },
+      type: String, 
+      unique: true,
+      required: true
     },
     password: {
       type: String,
