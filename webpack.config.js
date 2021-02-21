@@ -18,7 +18,7 @@ module.exports = {
   entry: [PolyFill, './src/index'],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: './dist/bundle.js',
+    filename: 'bundle.js',
   },
   plugins: [htmlPlugin, dotEnvPlugin],
   module: {
