@@ -10,7 +10,6 @@ const htmlPlugin = new HtmlWebPackPlugin({
   filename: './index.html',
 });
 
-const deduce = new webpack.optimize.DedupePlugin();
 const uglify = new webpack.optimize.UglifyJsPlugin({
   minimize: true,
   compress: {
@@ -33,7 +32,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
   },
-  plugins: [htmlPlugin, dotEnvPlugin, deduce, uglify, define],
+  plugins: [htmlPlugin, dotEnvPlugin, uglify, define],
   devServer: {
     contentBase: './dist',
     hot: true,
