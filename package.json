@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "webpack serve",
     "start": "node server.js",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "postinstall": "npm rebuild node-sass && npm install --unsafe-perm -f node-sass"
   },
   "keywords": [],
   "author": "",
