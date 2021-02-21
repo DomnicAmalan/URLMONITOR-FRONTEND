@@ -5,6 +5,7 @@ import indexRoutes from './routes';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthenticationContextProvider } from 'hooks';
+import Layout from 'antd/lib/layout/layout';
 
 
 const App = () => (
@@ -21,7 +22,9 @@ const App = () => (
               <>
                 <ToastContainer limit={3} />
                 <AuthenticationContextProvider>
-                  <Component {...props} />
+                  <Layout>
+                    <Component {...props} />
+                  </Layout>
                 </AuthenticationContextProvider>
               </>
             )}

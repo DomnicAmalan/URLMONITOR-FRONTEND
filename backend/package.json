@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "start": "fuser -k 3000/tcp && nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "DomnicAmalan <amalandomnic@gmail.com>",
