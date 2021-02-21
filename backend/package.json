@@ -16,6 +16,7 @@
     "express-kun": "^1.0.24",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.17",
-    "react-lottie": "^1.2.3"
+    "react-lottie": "^1.2.3",
+    "stream-http": "^3.1.1"
   }
 }
