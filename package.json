@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --mode production",
-    "start": "webpack serve --mode development --hot",
-    "postinstall": "npm rebuild node-sass && npm install --unsafe-perm -f node-sass"
+    "dev": "webpack serve",
+    "start": "node server.js",
+    "build": "webpack --mode production"
   },
   "keywords": [],
   "author": "",
