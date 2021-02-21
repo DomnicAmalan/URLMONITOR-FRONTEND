@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "./node_modules/.bin/webpack serve",
-    "build": "./node_modules/.bin/webpack --config webpack.config.js",
+    "start": "webpack serve --config webpack.config.js --open --hot",
+    "build": "webpack --config webpack.config.js --mode production",
     "postinstall": "npm rebuild node-sass && npm install --unsafe-perm -f node-sass"
   },
   "keywords": [],

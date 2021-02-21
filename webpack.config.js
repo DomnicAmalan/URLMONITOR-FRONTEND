@@ -17,10 +17,16 @@ const dotEnvPlugin = new webpack.DefinePlugin({
 module.exports = {
   entry: [PolyFill, './src/index'],
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'dist/bundle.js'),
     filename: 'bundle.js',
   },
   plugins: [htmlPlugin, dotEnvPlugin],
+  devServer: {
+    contentBase: './dist',
+    hot: true,
+    inline: true,
+    open:true
+  },
   module: {
     rules: [
       {
