@@ -17,11 +17,9 @@ const dotEnvPlugin = new webpack.DefinePlugin({
 module.exports = {
   entry: [PolyFill, './src/index'],
   output: {
-    // NEW
-    path: path.join(__dirname, 'dist'),
-    filename: '[name].js',
-    publicPath: '/',
-  }, // NEW Ends
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
+  },
   plugins: [htmlPlugin, dotEnvPlugin],
   module: {
     rules: [

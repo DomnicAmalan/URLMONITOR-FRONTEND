@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack serve",
-    "start": "node server.js",
-    "build": "webpack --mode production",
+    "start": "webpack serve --mode development --hot --port 8080",
+    "build": "webpack --mode production ",
     "postinstall": "npm rebuild node-sass && npm install --unsafe-perm -f node-sass"
   },
   "keywords": [],
