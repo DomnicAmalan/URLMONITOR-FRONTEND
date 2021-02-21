@@ -10,18 +10,18 @@ const htmlPlugin = new HtmlWebPackPlugin({
   filename: './index.html',
 });
 
-const deduce = new webpack.optimize.DedupePlugin(),
+const deduce = new webpack.optimize.DedupePlugin();
 const uglify = new webpack.optimize.UglifyJsPlugin({
   minimize: true,
   compress: {
     warnings: false
   }
-}),
+});
 const define = new webpack.DefinePlugin({
   'process.env': {
     'NODE_ENV': JSON.stringify('production')
   }
-})
+});
 
 const dotEnvPlugin = new webpack.DefinePlugin({
   'process.env': JSON.stringify(dotenv.parsed),
