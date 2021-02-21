@@ -4,8 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack serve --config webpack.config.js --open --hot",
-    "build": "webpack --config webpack.config.js --mode production",
+    "clean": "rm dist/bundle.js",
+    "start": "webpack serve --mode development --hot --port 3000",
+    "build": "webpack --mode production ",
+    "build-dev": "webpack --mode development",
+    "build-prod": "webpack --mode production",
+    "start-dev": "node --max-old-space-size=8192 node_modules/webpack/bin/webpack serve --mode development --hot --port 3000",
     "postinstall": "npm rebuild node-sass && npm install --unsafe-perm -f node-sass"
   },
   "keywords": [],
@@ -30,19 +34,11 @@
     "react-dom": "^16.14.0",
     "react-i18next": "^11.8.5",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^4.0.2",
+    "react-scripts": "^2.0.5",
     "react-toastify": "^7.0.3",
     "react-top-loading-bar": "^2.0.1",
     "sass-loader": "^10.1.1",
-    "style-loader": "^2.0.0",
-    "webpack": "^5.19.0",
-    "webpack-cli": "^4.4.0",
-    "webpack-dev-server": "^3.11.2",
-    "@babel/core": "^7.12.10",
-    "@babel/polyfill": "^7.12.1",
-    "@babel/preset-env": "^7.12.11",
-    "@babel/preset-react": "^7.12.10",
-    "babel-loader": "^8.2.2"
+    "style-loader": "^2.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
@@ -56,5 +52,13 @@
     "webpack": "^5.19.0",
     "webpack-cli": "^4.4.0",
     "webpack-dev-server": "^3.11.2"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
   }
 }
