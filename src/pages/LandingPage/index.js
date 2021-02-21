@@ -31,6 +31,7 @@ const Landingpage = ({history}) => {
         const userData = await firebase.auth().signInWithPopup(googleAuthProvider);
         const {user} = userData;
         setEmail(user.email)
+        setProgress(30)
         const check = await checkUser({email: user.email});
         if(check){
           setProgress(50);
