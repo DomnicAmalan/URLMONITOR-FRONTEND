@@ -59,6 +59,7 @@ module.exports = {
     historyApiFallback: true,
   },
   resolve: {
+    fallback: { "http": false },
     alias: {
       Assets: path.resolve(__dirname, './src/assets'),
       atoms: path.resolve(__dirname, './src/components/atoms/index'),

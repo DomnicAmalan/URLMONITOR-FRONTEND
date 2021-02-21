@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import indexRoutes from './routes';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { AuthenticationContextProvider } from 'hooks';
+
 
 const App = () => (
-
   <BrowserRouter>
     <Switch>
       <Redirect exact from="/" to="/app" />
@@ -19,7 +20,9 @@ const App = () => (
             render={(props) => (
               <>
                 <ToastContainer limit={3} />
-                <Component {...props} />
+                <AuthenticationContextProvider>
+                  <Component {...props} />
+                </AuthenticationContextProvider>
               </>
             )}
           />

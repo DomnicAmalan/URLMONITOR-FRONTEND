@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useCallback, useState} from 'react';
 import './landingpage.scss';
 import {LoadingContext} from 'hooks'
-import {Loading} from 'atoms';
+import {Loading, Password} from 'atoms';
 import {
   faGoogle
 } from '@fortawesome/free-brands-svg-icons';
@@ -11,47 +11,72 @@ import "firebase/auth";
 import firebase from "firebase/app";
 import { firebaseConfig } from "../../firebaseConfig";
 import { toast } from 'react-toastify';
-import { createUser, checkUser, authenticate } from '../../api'
-import axios from 'axios';
+import { createUser, checkUser, authenticate, test } from '../../api';
+import { Button } from 'antd';
+import LocalStorageService from "../../helpers/LocalStorageService";
 
 firebase.initializeApp(firebaseConfig);
 
-const Landingpage = () => {
+const Landingpage = ({history}) => {
   const {progress, setProgress} = useContext(LoadingContext);
-  const [getPassword, setGetPassword] = useState(false)
+  const [getPassword, setGetPassword] = useState(false);
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('')
+
+  const localStorageService = LocalStorageService.getService();
   
   const googleAuthMethod = useCallback(async() => {
       try{
         const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
         const userData = await firebase.auth().signInWithPopup(googleAuthProvider);
         const {user} = userData;
+        setEmail(user.email)
         const check = await checkUser({email: user.email});
-        // const data = await createUser({email: user.email});
-        // if(check){
-        //   setProgress(50);
-        //   authenticate({email: user.email})
-        // }
-        // else{
-        //   if(user){
-        //     setProgress(50);
-        //     try{
-        //       setGetPassword(true)
-        //       // const data = await createUser({email: user.email});
-        //     }
-        //     catch(err){
-        //       toast(err.message)
-        //     }
-        //   }
-          
-          
-        // }
+        if(check){
+          setProgress(50);
+          const data = await authenticate({email: user.email})
+          setToken(data);
+          setProgress(100)
+          history.push("/app/dashboard")
+        }
+        else{
+          setProgress(30);
+          const data = await createUser({email: email});
+          if(data){
+            const {jwt} = await authenticate({email: user.email});
+            await setToken(jwt);
+            history.push("/app/dashboard");        
+          }
+          else{
+            toast("User not created")
+          }
+        }
       }
       catch(err){
-        console.log(err)
         toast(err.message, {toastId: "google-login",  delay:100})
       }
     }
   )
+
+  const setToken = async(data) => {
+    localStorageService.setToken(data)
+  }
+
+  const create = async() => {
+    if(email && password){
+      const data = await createUser({email: email, password: password});
+      if(data){
+        const {jwt} = await authenticate({email: user.email})
+        setToken(jwt)
+      }
+      else{
+        toast("User not created")
+      }
+    }
+    else{
+      toast("Please create password")
+    }
+  }
 
 
   const { t } = useTranslation();
@@ -71,8 +96,14 @@ const Landingpage = () => {
         <div className="login-container">
           {
             getPassword ? 
-            <input type="password" />
+            <>
+              <Password onChange={setPassword} />
+              <Button type="primary" block onClick={() => create()}>
+                Primary
+              </Button>
+            </>
             : 
+            <>
             <AuthButtons
               provider="google"
               title={t('authbuttons.google.title')}
@@ -80,6 +111,8 @@ const Landingpage = () => {
               style={{ color: '#15AABF' }}
               action={googleAuthMethod}
             />
+            <div onClick={() => test()}>TEST</div>
+            </>
           }
         </div>
       </div>

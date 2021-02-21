@@ -1,5 +1,6 @@
 import Loading from './Loading';
 import AuthButtons from './AuthButtons';
-import Toast from './NotificationManager'
+import Toast from './NotificationManager';
+import {Password} from './inputs'
 
-export { Loading, AuthButtons, Toast }
+export { Loading, AuthButtons, Toast, Password }
