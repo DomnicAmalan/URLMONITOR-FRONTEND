@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack serve",
     "start": "./node_modules/.bin/webpack serve",
     "build": "./node_modules/.bin/webpack --config webpack.config.js",
     "postinstall": "npm rebuild node-sass && npm install --unsafe-perm -f node-sass"
