@@ -10,18 +10,6 @@ const htmlPlugin = new HtmlWebPackPlugin({
   filename: './index.html',
 });
 
-const uglify = new webpack.optimize.UglifyJsPlugin({
-  minimize: true,
-  compress: {
-    warnings: false
-  }
-});
-const define = new webpack.DefinePlugin({
-  'process.env': {
-    'NODE_ENV': JSON.stringify('production')
-  }
-});
-
 const dotEnvPlugin = new webpack.DefinePlugin({
   'process.env': JSON.stringify(dotenv.parsed),
 });
@@ -32,7 +20,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
   },
-  plugins: [htmlPlugin, dotEnvPlugin, uglify, define],
+  plugins: [htmlPlugin, dotEnvPlugin],
   devServer: {
     contentBase: './dist',
     hot: true,
