@@ -39,6 +39,7 @@
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-i18next": "^11.8.5",
+    "react-json-editor-ajrm": "^2.5.13",
     "react-router-dom": "^5.2.0",
     "react-toastify": "^7.0.3",
     "react-top-loading-bar": "^2.0.1",

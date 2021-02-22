@@ -1,6 +1,5 @@
-import axios from 'axios';
 import Axios from 'axios';
-import LocalStorageService from "./helpers/LocalStorageService"; 
+import LocalStorageService from ".././helpers/LocalStorageService"; 
 
 
 const localStorageService = LocalStorageService.getService();

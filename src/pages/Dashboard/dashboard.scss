@@ -10,6 +10,7 @@ $main-font: 'Fira Sans', sans-serif;
   min-height: 80vh;
   align-items: center;
   justify-content: center;
+  background-color: white;
   .empty-container {
     display: flex;
     align-items: center;
@@ -31,4 +32,8 @@ $main-font: 'Fira Sans', sans-serif;
       }
     }
   }
+}
+
+.modal{
+  width: 1000px !important;
 }

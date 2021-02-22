@@ -11,7 +11,7 @@ import "firebase/auth";
 import firebase from "firebase/app";
 import { firebaseConfig } from "../../firebaseConfig";
 import { toast } from 'react-toastify';
-import { createUser, checkUser, authenticate } from '../../api';
+import { createUser, checkUser, authenticate } from '../../API/api';
 import { Button } from 'antd';
 import LocalStorageService from "../../helpers/LocalStorageService";
 
