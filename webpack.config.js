@@ -6,7 +6,7 @@ const webpack = require('webpack');
 const dotenv = require('dotenv').config({ path: `${__dirname}/.env` });
 
 const htmlPlugin = new HtmlWebPackPlugin({
-  template: './src/index.html',
+  template: './dist/index.html',
   filename: './index.html',
 });
 
@@ -19,6 +19,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
+    publicPath: '/',
   },
   plugins: [htmlPlugin, dotEnvPlugin],
   devServer: {
