@@ -69,7 +69,8 @@ module.exports = {
       Assets: path.resolve(__dirname, './src/assets'),
       atoms: path.resolve(__dirname, './src/components/atoms/index'),
       hooks: path.resolve(__dirname, './src/hooks/index'),
-      pages: path.resolve(__dirname, './src/pages')
+      pages: path.resolve(__dirname, './src/pages'),
+      layouts: path.resolve(__dirname, './src/Layout/GuestLayout')
     },
   },
 };

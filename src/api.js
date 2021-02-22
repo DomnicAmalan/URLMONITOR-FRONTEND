@@ -11,16 +11,16 @@ const UserInstance = Axios.create({
   baseURL: BACKEND_BASE_URL + '/api/users'
 });
 
-UserInstance.interceptors.request.use(function (config) {
-  config.headers.Authorization = `Bearer ${localStorageService.getAccessToken()}`;
-  return config;
+const TokenInstance = Axios.create({
+  baseURL: BACKEND_BASE_URL + '/api/users'
 });
 
 UserInstance.interceptors.request.use(
   config => {
-    const token = localStorageService.getAccessToken();
-    if (token) {
-        config.headers['Authorization'] = 'Bearer ' + token;
+    const accessToken = localStorageService.getAccessToken();
+    console.log(accessToken)
+    if (accessToken) {
+        config.headers['Authorization'] = 'Bearer ' + accessToken;
     }
     return config;
 },
@@ -33,7 +33,7 @@ UserInstance.interceptors.response.use(function (response) {
 }, function (error) {
   const originalRequest = error.config;
   if(error.response.status === 401){
-    return axios.post('http://localhost:3000/api/users/token',
+    return TokenInstance.post('/token',
     {
       "refreshToken": localStorageService.getRefreshToken()
     })
@@ -45,9 +45,9 @@ UserInstance.interceptors.response.use(function (response) {
       }
     })
   }
-  else{
+  else if(error.response.status === 205){
     localStorageService.clearToken()
-    window.location.href = "/app"
+    window.location.href="/app"
   }
   return Promise.reject(error.response);
 })

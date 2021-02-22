@@ -11,7 +11,7 @@ import "firebase/auth";
 import firebase from "firebase/app";
 import { firebaseConfig } from "../../firebaseConfig";
 import { toast } from 'react-toastify';
-import { createUser, checkUser, authenticate, test } from '../../api';
+import { createUser, checkUser, authenticate } from '../../api';
 import { Button } from 'antd';
 import LocalStorageService from "../../helpers/LocalStorageService";
 
@@ -104,7 +104,6 @@ const Landingpage = ({history}) => {
               </Button>
             </>
             : 
-            <>
             <AuthButtons
               provider="google"
               title={t('authbuttons.google.title')}
@@ -112,8 +111,6 @@ const Landingpage = ({history}) => {
               style={{ color: '#15AABF' }}
               action={googleAuthMethod}
             />
-            <div onClick={() => test()}>TEST</div>
-            </>
           }
         </div>
       </div>

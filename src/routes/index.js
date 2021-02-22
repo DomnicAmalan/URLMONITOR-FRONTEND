@@ -1,5 +1,5 @@
 import AppRoute from './modules/AppRT';
-import Guestlayout from '../components/layouts/guestLayout'
+import Guestlayout from 'layouts'
 
 const listRoutes = [
   {
