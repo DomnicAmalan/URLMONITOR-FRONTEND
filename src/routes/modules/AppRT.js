@@ -1,7 +1,7 @@
 import LandingPage from 'pages/LandingPage';
 import Dashboard from 'pages/Dashboard';
 
-const prefix = '/';
+const prefix = '/app';
 
 const routes = [
   {
