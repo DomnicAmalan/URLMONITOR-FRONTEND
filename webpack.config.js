@@ -7,7 +7,7 @@ const dotenv = require('dotenv').config({ path: `${__dirname}/.env` });
 
 const htmlPlugin = new HtmlWebPackPlugin({
   template: './dist/index.html',
-  filename: './index.html',
+  filename: './index.html'
 });
 
 const dotEnvPlugin = new webpack.DefinePlugin({
@@ -57,17 +57,7 @@ module.exports = {
             presets: ['@babel/preset-env', '@babel/preset-react'],
           },
         },
-      },
-      {
-        test: /\.html$/,
-        exclude: [/node_modules/, require.resolve('./index.html')],
-        use: {
-            loader: 'file-loader',
-            query: {
-                name: '[name].[ext]'
-            },
-        },
-      },
+      }
     ],
   },
   devServer: {
