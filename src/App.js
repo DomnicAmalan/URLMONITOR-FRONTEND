@@ -11,7 +11,7 @@ import Layout from 'antd/lib/layout/layout';
 const App = () => (
   <BrowserRouter>
     <Switch>
-      <Redirect exact from="/" to="/app" />
+      <Redirect exact from="/" to="/" />
       {indexRoutes.map(({ routes }) =>
         routes.map(({ path, exact, component: Component }) => (
           <Route
