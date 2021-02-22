@@ -1,13 +1,14 @@
 import axios from 'axios';
 import Axios from 'axios';
-import { request } from 'http';
-import {toast} from 'react-toastify';
 import LocalStorageService from "./helpers/LocalStorageService"; 
+
 
 const localStorageService = LocalStorageService.getService();
 
+const BACKEND_BASE_URL = process.env.BACKEND_BASE_URL
+
 const UserInstance = Axios.create({
-  baseURL: 'http://localhost:3000/api/users'
+  baseURL: BACKEND_BASE_URL + '/api/users'
 });
 
 UserInstance.interceptors.request.use(function (config) {
