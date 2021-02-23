@@ -72,3 +72,13 @@ export const authenticate = async(req) => {
 export const test = async() => {
   const data = await UserInstance.get('/user')
 }
+
+export const Logout = async() => {
+  const {data} = await UserInstance.post('/logout', {
+    "refreshToken": localStorageService.getRefreshToken()
+  })
+  if(data){
+    localStorageService.clearToken()
+    window.location.href="/app"
+  }
+}

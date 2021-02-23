@@ -67,3 +67,13 @@ export const deleteMonitor = async(id) => {
   const {data} = await MonitorInstance.delete(`/delete-monitor/${id}`)
   return data
 }
+
+export const activateMonitor = async(id, status) => {
+  const {data} = await MonitorInstance.post(`/activate-job/${id}`, {status: status})
+  return data
+}
+
+export const getLogs = async(id) => {
+  const {data} = await MonitorInstance.get(`/get-logs/${id}`)
+  return data
+}

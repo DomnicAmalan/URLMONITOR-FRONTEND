@@ -1,4 +1,5 @@
 import ModalForm from './AddUrlModal';
-import ListMonitors from './ListMonitors'
+import ListMonitors from './ListMonitors';
+import ListLogs from './ListLogs'
 
-export { ModalForm, ListMonitors }
+export { ModalForm, ListMonitors, ListLogs }

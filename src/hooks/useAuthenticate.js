@@ -16,7 +16,6 @@ export const AuthenticationContextProvider = ({children}) => {
     }
     else{
       setIsAuthenticated(true);
-      history.push("/app/dashboard")
     }
   }, [IsAuthenticated])
 

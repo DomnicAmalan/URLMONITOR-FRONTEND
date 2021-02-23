@@ -5,8 +5,6 @@ import indexRoutes from './routes';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthenticationContextProvider } from 'hooks';
-import Layout from 'antd/lib/layout/layout';
-
 
 const App = () => (
   <BrowserRouter>

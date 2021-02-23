@@ -50,7 +50,6 @@ const ModalForm = ({onFinish, monitors, setMonitors, IsEdit, editData }) => {
   }
 
   const onFinishValues = async(values) => {
-    console.log(Validate())
     if(Validate()){
       const data = {
         [typeOfAddress]: url,
@@ -61,7 +60,8 @@ const ModalForm = ({onFinish, monitors, setMonitors, IsEdit, editData }) => {
         interval,
         expect: {
           statusCode: expectedStatusCode
-        }
+        },
+        httpOptions: httpOptions
       }
       const resp = await addMonitor(data)
       setMonitors([...monitors, resp.monitor]);
@@ -114,7 +114,7 @@ const ModalForm = ({onFinish, monitors, setMonitors, IsEdit, editData }) => {
       </Form.Item>
       <Form.Item label={"Interval"} required>
         <Row>
-            <Col span={8}>
+            <Col span={8} style={{paddingRight:10}}>
               <Select
               placeholder="server or website"
               onChange={(value) => setIntervalUnits(value)}

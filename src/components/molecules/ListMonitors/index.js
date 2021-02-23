@@ -1,15 +1,25 @@
 import React from 'react';
 import "./listmonitors.scss";
-import { Table, Button } from 'antd';
-
+import { Table, Button, Switch } from 'antd';
+import {activateMonitor} from '../../../API/monitors'
+import {useHistory} from 'react-router-dom'
 
 
 const ListMonitors = ({monitors, setMonitors, onFinish, setEdit, setEditData, MonitorDelete}) => {
+
+  const history = useHistory()
 
   const editModal = (data) => {
     setEdit(true)
     setEditData(data)
     onFinish()
+  }
+
+  const changeStatus = async(data, idx) => {
+    data.status = !data.status
+    monitors[idx] = data
+    setMonitors(monitors)
+    await activateMonitor(data._id, data.status)
   }
 
   const tableData = [
@@ -28,13 +38,13 @@ const ListMonitors = ({monitors, setMonitors, onFinish, setEdit, setEditData, Mo
     {
       title: "Status",
       dataIndex: 'config',
-      render: (data) => <a>Active</a>,
+      render: (data, parentData, idx) =>  <Switch defaultChecked={parentData.status} onChange={() => changeStatus(parentData, idx)}  />,
       width: 200,
     },
     {
       title: "Logs",
       dataIndex: '_id',
-      render: () => <a >View logs</a>,
+      render: (id) => <a onClick={() => history.push(`/app/logs/?id=${id}`)}>View logs</a>,
       width: 200,
     },
     {
