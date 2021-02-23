@@ -4,7 +4,8 @@ import {PlusSquareOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
 import { Modal, Button } from 'antd';
 import "antd/dist/antd.css";
 import { ModalForm, ListMonitors } from 'molecules';
-import {listMonitors} from '../../API/monitors';
+import {listMonitors, deleteMonitor} from '../../API/monitors';
+import { toast } from 'react-toastify';
 
 const Dashboard = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -12,7 +13,20 @@ const Dashboard = () => {
   const [monitors, setMonitors] = useState([]);
 
   const [IsEdit, setEdit] = useState(false);
-  const [editData, setEditData] = useState(null)
+  const [editData, setEditData] = useState(null);
+  const [IsDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+
+  const MonitorDelete = async(id) => {
+    const data = await deleteMonitor(id)
+    if(data){
+      const deleteItem = monitors.filter(e => e._id !== id);
+      setMonitors(deleteItem)
+    }
+    else{
+      toast("Failed to delete")
+    }
+   
+  }
 
   useEffect(() => {
     setData()
@@ -37,11 +51,14 @@ const Dashboard = () => {
             Add new url
           </Button>
         </div>
-        <ListMonitors monitors={monitors} setMonitors={setMonitors} onFinish={() => setIsModalVisible(!isModalVisible)} setEdit={setEdit} setEditData={setEditData} />
+        <ListMonitors monitors={monitors} setMonitors={setMonitors} MonitorDelete={MonitorDelete} onFinish={() => setIsModalVisible(!isModalVisible)} setEdit={setEdit} setEditData={setEditData} />
       </div>
       }
       <Modal title="Add URL" visible={isModalVisible} className="modal" footer={false} onCancel={() => setIsModalVisible(false)} >
         <ModalForm onFinish={() => setIsModalVisible(!isModalVisible)} monitors={monitors} setMonitors={setMonitors} IsEdit={IsEdit} editData={editData} />
+      </Modal>
+      <Modal visible={IsDeleteModalVisible} onCancel={() => setIsDeleteModalVisible(false)} >
+        <p>Are you sure you want to delete the job?</p>
       </Modal>
     </div>
   )

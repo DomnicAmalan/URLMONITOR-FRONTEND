@@ -4,7 +4,7 @@ import { Table, Button } from 'antd';
 
 
 
-const ListMonitors = ({monitors, setMonitors, onFinish, setEdit, setEditData}) => {
+const ListMonitors = ({monitors, setMonitors, onFinish, setEdit, setEditData, MonitorDelete}) => {
 
   const editModal = (data) => {
     setEdit(true)
@@ -43,7 +43,7 @@ const ListMonitors = ({monitors, setMonitors, onFinish, setEdit, setEditData}) =
       render: (data) =>
       <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
         <Button onClick={() => editModal(monitors.find(x => x._id === data).config)} >Edit</Button>
-        <Button>Delete</Button>
+        <Button onClick={() => MonitorDelete(data)}>Delete</Button>
       </div>,
        width: 200,
        align: "center",

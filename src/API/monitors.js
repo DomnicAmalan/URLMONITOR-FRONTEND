@@ -62,3 +62,8 @@ export const listMonitors = async(req) => {
   console.log(data)
   return data
 }
+
+export const deleteMonitor = async(id) => {
+  const {data} = await MonitorInstance.delete(`/delete-monitor/${id}`)
+  return data
+}
