@@ -54,7 +54,7 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-react'],
+            presets: ['@babel/preset-env',  '@babel/preset-react',],
           },
         },
       }
@@ -70,7 +70,8 @@ module.exports = {
       atoms: path.resolve(__dirname, './src/components/atoms/index'),
       hooks: path.resolve(__dirname, './src/hooks/index'),
       pages: path.resolve(__dirname, './src/pages'),
-      layouts: path.resolve(__dirname, './src/Layout/GuestLayout')
+      layouts: path.resolve(__dirname, './src/Layout/GuestLayout'),
+      molecules: path.resolve(__dirname, './src/components/molecules/index'),
     },
   },
 };

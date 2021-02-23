@@ -44,10 +44,21 @@ MonitorInstance.interceptors.response.use(function (response) {
     localStorageService.clearToken()
     window.location.href="/app"
   }
+  else{
+    localStorageService.clearToken()
+    window.location.href="/app"
+  }
   return Promise.reject(error.response);
 })
 
 export const addMonitor = async(req) => {
   const {data} = await MonitorInstance.post("/url-monitor-add", req);
+  console.log(data)
+  return data
+}
+
+export const listMonitors = async(req) => {
+  const {data} = await MonitorInstance.post("/list-monitors", req);
+  console.log(data)
   return data
 }

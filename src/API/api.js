@@ -17,7 +17,6 @@ const TokenInstance = Axios.create({
 UserInstance.interceptors.request.use(
   config => {
     const accessToken = localStorageService.getAccessToken();
-    console.log(accessToken)
     if (accessToken) {
         config.headers['Authorization'] = 'Bearer ' + accessToken;
     }
@@ -45,6 +44,10 @@ UserInstance.interceptors.response.use(function (response) {
     })
   }
   else if(error.response.status === 205){
+    localStorageService.clearToken()
+    window.location.href="/app"
+  }
+  else{
     localStorageService.clearToken()
     window.location.href="/app"
   }

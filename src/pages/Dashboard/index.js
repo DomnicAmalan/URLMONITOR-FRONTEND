@@ -1,18 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./dashboard.scss";
 import {PlusSquareOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
-import { Slider, InputNumber, Row, Col, Input, Modal, Form, Select, Typography } from 'antd';
+import { Modal, Button } from 'antd';
 import "antd/dist/antd.css";
-import ModalForm from '../../components/molecules/AddUrlModal'
-
-const { confirm } = Modal;
+import { ModalForm, ListMonitors } from 'molecules';
+import {listMonitors} from '../../API/monitors';
 
 const Dashboard = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const [monitors, setMonitors] = useState([]);
 
-  console.log(isModalVisible)
+  const [IsEdit, setEdit] = useState(false);
+  const [editData, setEditData] = useState(null)
+
+  useEffect(() => {
+    setData()
+  }, [])
+
+  const setData = async() => {
+    const data = await listMonitors();
+    setMonitors(data)
+  }
 
   return (
     <div className="dashboard-container">
@@ -20,9 +29,19 @@ const Dashboard = () => {
       <div className="empty-container" onClick={() => setIsModalVisible(true)}>
         <PlusSquareOutlined className="empty-add" />
         <p className="empty-text">Add url to monitor</p>
-      </div>: <div>DDF</div>}
-      <Modal title="Add URL" visible={isModalVisible} className="modal">
-        <ModalForm onFinish={() => setIsModalVisible(!isModalVisible)} />
+      </div>: 
+      <div className="table-container">
+        <div className="table-add-button">
+          <Button onClick={() => setIsModalVisible(true)}>
+            <PlusSquareOutlined className="add" />
+            Add new url
+          </Button>
+        </div>
+        <ListMonitors monitors={monitors} setMonitors={setMonitors} onFinish={() => setIsModalVisible(!isModalVisible)} setEdit={setEdit} setEditData={setEditData} />
+      </div>
+      }
+      <Modal title="Add URL" visible={isModalVisible} className="modal" footer={false} onCancel={() => setIsModalVisible(false)} >
+        <ModalForm onFinish={() => setIsModalVisible(!isModalVisible)} monitors={monitors} setMonitors={setMonitors} IsEdit={IsEdit} editData={editData} />
       </Modal>
     </div>
   )
