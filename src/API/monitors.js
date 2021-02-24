@@ -7,7 +7,7 @@ const localStorageService = LocalStorageService.getService();
 const BACKEND_BASE_URL = process.env.BACKEND_BASE_URL;
 
 const MonitorInstance = Axios.create({
-  baseURL: BACKEND_BASE_URL + '/api/monitor'
+  baseURL: BACKEND_BASE_URL + 'api/monitor'
 })
 
 MonitorInstance.interceptors.request.use(

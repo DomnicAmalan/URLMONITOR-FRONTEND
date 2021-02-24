@@ -7,11 +7,11 @@ const localStorageService = LocalStorageService.getService();
 const BACKEND_BASE_URL = process.env.BACKEND_BASE_URL
 
 const UserInstance = Axios.create({
-  baseURL: BACKEND_BASE_URL + '/api/users'
+  baseURL: BACKEND_BASE_URL + 'api/users'
 });
 
 const TokenInstance = Axios.create({
-  baseURL: BACKEND_BASE_URL + '/api/users'
+  baseURL: BACKEND_BASE_URL + 'api/users'
 });
 
 UserInstance.interceptors.request.use(
