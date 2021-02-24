@@ -4,13 +4,11 @@ const { Header } = Layout;
 import "./guestlayout.scss";
 import {Logout} from '../../API/api'
 import { AuthenticationContext } from 'hooks';
-
+import {Loading, Password} from 'atoms';
 
 const GuestLayout = ({children}) => {
 
   const { IsAuthenticated } = useContext(AuthenticationContext)
-  console.log(IsAuthenticated)
-
   return (
     <Layout className="guest-layout">
       <Header className="header">
@@ -18,6 +16,7 @@ const GuestLayout = ({children}) => {
         {IsAuthenticated ? <Button className="button" onClick={() => Logout()}>Logout</Button> : null}
       </Header>
       <div className="guest-layout-children">{children}</div>
+      <Loading />
     </Layout>
   )
 }

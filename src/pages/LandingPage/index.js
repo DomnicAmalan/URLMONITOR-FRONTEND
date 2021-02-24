@@ -88,7 +88,6 @@ const Landingpage = ({history}) => {
 
   return( 
     <div className="landing-wrapper">
-      <Loading />
       <div className="header-container">
         <h1>Sparrow Ping</h1>
         <h2>Welcome to Sparrow ping</h2>

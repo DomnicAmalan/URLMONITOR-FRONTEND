@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import "./dashboard.scss";
 import {PlusSquareOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
 import { Modal, Button } from 'antd';
@@ -6,8 +6,11 @@ import "antd/dist/antd.css";
 import { ModalForm, ListMonitors } from 'molecules';
 import {listMonitors, deleteMonitor} from '../../API/monitors';
 import { toast } from 'react-toastify';
+import {LoadingContext} from 'hooks'
+
 
 const Dashboard = () => {
+  const {setProgress} = useContext(LoadingContext)
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const [monitors, setMonitors] = useState([]);
@@ -25,16 +28,27 @@ const Dashboard = () => {
     else{
       toast("Failed to delete")
     }
-   
   }
 
   useEffect(() => {
-    setData()
-  }, [])
+    setProgress(50)
+    setData();
+    setProgress(100)
+  }, [IsEdit])
 
   const setData = async() => {
     const data = await listMonitors();
     setMonitors(data)
+  }
+  
+  const closeModal = () => {
+    setEdit(false)
+    setEditData(null);
+    setIsModalVisible(false)
+  }
+
+  const deleteMonitor = (id) => {
+
   }
 
   return (
@@ -54,10 +68,10 @@ const Dashboard = () => {
         <ListMonitors monitors={monitors} setMonitors={setMonitors} MonitorDelete={MonitorDelete} onFinish={() => setIsModalVisible(!isModalVisible)} setEdit={setEdit} setEditData={setEditData} />
       </div>
       }
-      <Modal title="Add URL" visible={isModalVisible} className="modal" footer={false} onCancel={() => setIsModalVisible(false)} >
-        <ModalForm onFinish={() => setIsModalVisible(!isModalVisible)} monitors={monitors} setMonitors={setMonitors} IsEdit={IsEdit} editData={editData} />
+      <Modal title={IsEdit ? "Add URL": "Edit URL"} visible={isModalVisible} className="modal" footer={false} onCancel={() => closeModal()} >
+        <ModalForm onFinish={() => setIsModalVisible(!isModalVisible)} monitors={monitors} setMonitors={setMonitors} IsEdit={IsEdit} editData={editData} closeModal={closeModal} setEdit={setEdit} setEditData={setEditData} />
       </Modal>
-      <Modal visible={IsDeleteModalVisible} onCancel={() => setIsDeleteModalVisible(false)} >
+      <Modal visible={IsDeleteModalVisible} onCancel={() => setIsDeleteModalVisible(false)}  >
         <p>Are you sure you want to delete the job?</p>
       </Modal>
     </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table, Tag } from 'antd';
+import "./listlogs.scss"
 
 const ListLogs = ({ tableData }) => {
 
@@ -17,9 +18,15 @@ const ListLogs = ({ tableData }) => {
       render: (data) => <a>{data}</a>,
     },
     {
-      title: "Response Time",
+      title: "Response Status",
       dataIndex: 'responseTime',
       render: (data) => {return data === "-1" ? <Tag color="red">Server Down</Tag>: <Tag color="orange">Slow Response</Tag>},
+      width: 250,
+    },
+    {
+      title: "Response Time",
+      dataIndex: 'responseTime',
+      render: (data) => <p>{`${data} ms`}</p>,
       width: 250,
     },
     {

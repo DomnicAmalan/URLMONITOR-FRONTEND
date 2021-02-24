@@ -13,7 +13,6 @@ const MonitorInstance = Axios.create({
 MonitorInstance.interceptors.request.use(
   config => {
     const accessToken = localStorageService.getAccessToken();
-    console.log(accessToken)
     if (accessToken) {
         config.headers['Authorization'] = 'Bearer ' + accessToken;
     }
@@ -53,13 +52,11 @@ MonitorInstance.interceptors.response.use(function (response) {
 
 export const addMonitor = async(req) => {
   const {data} = await MonitorInstance.post("/url-monitor-add", req);
-  console.log(data)
   return data
 }
 
 export const listMonitors = async(req) => {
   const {data} = await MonitorInstance.post("/list-monitors", req);
-  console.log(data)
   return data
 }
 
@@ -75,5 +72,10 @@ export const activateMonitor = async(id, status) => {
 
 export const getLogs = async(id) => {
   const {data} = await MonitorInstance.get(`/get-logs/${id}`)
+  return data
+}
+
+export const getMonitor = async(id) => {
+  const {data} = await MonitorInstance.get(`/get-monitor/${id}`)
   return data
 }

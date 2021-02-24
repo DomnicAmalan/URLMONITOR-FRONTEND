@@ -1,33 +1,26 @@
 import React, { useEffect, useState, createRef } from 'react';
-import { Slider, InputNumber, Row, Col, Input, Modal, Form, Select, Button, Typography } from 'antd';
+import { Slider, InputNumber, Row, Col, Input, Form, Select, Button } from 'antd';
 import "antd/dist/antd.css";
 import JSONInput from 'react-json-editor-ajrm';
 import locale    from 'react-json-editor-ajrm/locale/en';
 import {addMonitor} from '../../../API/monitors'
 import { toast } from 'react-toastify';
 
-const ModalForm = ({onFinish, monitors, setMonitors, IsEdit, editData }) => {
+const ModalForm = ({onFinish, monitors, setMonitors, IsEdit, editData, closeModal, setEdit }) => {
 
   const formRef = createRef();
-  const [requiredMark, setRequiredMarkType] = useState('optional');
-
-  console.log(IsEdit, editData)
-
-  const onRequiredTypeChange = ({ requiredMark }) => {
-    setRequiredMarkType(requiredMark);
-  };
 
   const typeAddressOptions = ['address', "website"];
   const units = ['seconds', 'milliseconds', 'minutes']
 
   const [typeOfAddress, setTypeOfAddress] = useState('');
   const [url, setURL] = useState('');
-  const [title, setTitle]= useState('');
+  const [title, setTitle]= useState(IsEdit ? editData.title: "");
   const [port, setPORT] = useState('');
-  const [intervalUnits, setIntervalUnits] = useState('');
+  const [intervalUnits, setIntervalUnits] = useState(IsEdit ?  editData.confing.intervalUnits: "");
   const [httpOptions, setHttpOptions] = useState({});
   const [expectedStatusCode, setExpectedStatusCode] = useState(200);
-  const [interval, setInterval] = useState(5);
+  const [interval, setInterval] = useState(IsEdit ? editData.interval : 5);
   const [httpOptionsGet, setHttpOptionsGet] = useState(false);
 
   const validations = [
@@ -48,7 +41,7 @@ const ModalForm = ({onFinish, monitors, setMonitors, IsEdit, editData }) => {
   
     return Boolean(!typeString.length) && Boolean(!typeArray.length)  && Boolean(!typeObject.length)
   }
-
+  
   const onFinishValues = async(values) => {
     if(Validate()){
       const data = {
@@ -60,8 +53,10 @@ const ModalForm = ({onFinish, monitors, setMonitors, IsEdit, editData }) => {
         interval,
         expect: {
           statusCode: expectedStatusCode
-        },
-        httpOptions: httpOptions
+        }
+      }
+      if(httpOptionsGet){
+        data.httpOptions(setHttpOptions)
       }
       const resp = await addMonitor(data)
       setMonitors([...monitors, resp.monitor]);
@@ -71,34 +66,35 @@ const ModalForm = ({onFinish, monitors, setMonitors, IsEdit, editData }) => {
       toast("Please fill in required fields")
     }
     
-  }
-
+  }  
 
   useEffect(() => {
-    if(IsEdit){
-      setInterval(editData.interval);
-      setIntervalUnits(editData.confing.intervalUnits)
+    if(IsEdit && editData){
+      const data = Object.keys(editData).filter(x => typeAddressOptions.includes(x))[0]
+      setURL(editData[data])
+      setTypeOfAddress(data)
+    }
+    return () => {
+      if(formRef.current){
+        formRef.current.resetFields()
+      }
     }
   }, [])
 
   return (
     <Form 
       onFinish={onFinishValues}
-      initialValues={{
-        requiredMark,
-      }}
-      onValuesChange={onRequiredTypeChange}
-      requiredMark={requiredMark}
       ref={formRef}
     >
       <Form.Item label={"Title"} required>
-        <Input placeholder={"Name of your check"} onChange={(e) => setTitle(e.target.value)} value={title} />
+        <Input placeholder={"Name of your check"} onChange={(e) => setTitle(e.target.value)} value={title}  />
       </Form.Item>
       <Form.Item label={"Type of url to check"} required>
         <Select
           placeholder="server or website"
           onChange={(value) => setTypeOfAddress(value)}
           allowClear
+          value={typeOfAddress}
         >
           {typeAddressOptions.map((item) => {
             return(
@@ -110,7 +106,7 @@ const ModalForm = ({onFinish, monitors, setMonitors, IsEdit, editData }) => {
         </Select>
       </Form.Item>
       <Form.Item label={"Address"} required>
-        <Input placeholder={"Website or server address"} value={url} onChange={(e) => setURL(e.target.value)}  />
+        <Input placeholder={"Website or server address"}  onChange={(e) => setURL(e.target.value)} value={url}  />
       </Form.Item>
       <Form.Item label={"Interval"} required>
         <Row>
@@ -119,6 +115,7 @@ const ModalForm = ({onFinish, monitors, setMonitors, IsEdit, editData }) => {
               placeholder="server or website"
               onChange={(value) => setIntervalUnits(value)}
               allowClear
+              value={intervalUnits}
             >
               {units.map((item) => {
                 return(
@@ -134,7 +131,7 @@ const ModalForm = ({onFinish, monitors, setMonitors, IsEdit, editData }) => {
               min={5}
               max={100}
               onChange={value => setInterval(value)}
-              value={typeof interval === 'number' ? interval : 0}
+              value={typeof interval === 'number' ? interval : 5}
             />
           </Col>
           <Col span={4}>
@@ -149,7 +146,7 @@ const ModalForm = ({onFinish, monitors, setMonitors, IsEdit, editData }) => {
         </Row>
       </Form.Item>
       <Form.Item label={"Expected Status Code"} required>
-        <Input value={expectedStatusCode} onChange={(e) => setExpectedStatusCode(e.target.value)} />
+        <Input value={expectedStatusCode} onChange={(e) => setExpectedStatusCode(e.target.value)} value={expectedStatusCode} />
       </Form.Item>
       <Button onClick={() => setHttpOptionsGet(!httpOptionsGet)} >Advanced</Button>
       {httpOptionsGet ? <Form.Item>
@@ -165,6 +162,7 @@ const ModalForm = ({onFinish, monitors, setMonitors, IsEdit, editData }) => {
           locale={ locale }
           height='200px'
           width="100%"
+          value={httpOptions}
         />
       </Form.Item>: null}
       <Form.Item>
