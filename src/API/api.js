@@ -47,10 +47,6 @@ UserInstance.interceptors.response.use(function (response) {
     localStorageService.clearToken()
     window.location.href="/app"
   }
-  else{
-    localStorageService.clearToken()
-    window.location.href="/app"
-  }
   return Promise.reject(error.response);
 })
 
