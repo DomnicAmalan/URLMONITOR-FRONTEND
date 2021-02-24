@@ -3,10 +3,10 @@ import { Slider, InputNumber, Row, Col, Input, Form, Select, Button } from 'antd
 import "antd/dist/antd.css";
 import JSONInput from 'react-json-editor-ajrm';
 import locale    from 'react-json-editor-ajrm/locale/en';
-import {addMonitor} from '../../../API/monitors'
+import {addMonitor, editMonitor} from '../../../API/monitors'
 import { toast } from 'react-toastify';
 
-const ModalForm = ({onFinish, monitors, setMonitors, IsEdit, editData, closeModal, setEdit }) => {
+const ModalForm = ({onFinish, monitors, setMonitors, IsEdit, editData, closeModal, setEdit, editId }) => {
 
   const formRef = createRef();
 
@@ -58,8 +58,20 @@ const ModalForm = ({onFinish, monitors, setMonitors, IsEdit, editData, closeModa
       if(httpOptionsGet){
         data.httpOptions(setHttpOptions)
       }
-      const resp = await addMonitor(data)
-      setMonitors([...monitors, resp.monitor]);
+      if(typeOfAddress === "address"){
+        data.port = port
+      }
+      if(IsEdit){
+        const {monitor} = await editMonitor(editId, data);
+        const updateIndex = monitors.findIndex(x => x._id ===editId)
+        monitors[updateIndex] = monitor
+        setMonitors(monitors);
+      }
+      else{
+        const resp = await addMonitor(data);
+        setMonitors([...monitors, resp.monitor]);
+      }
+      
       onFinish();
     }
     else {
@@ -69,10 +81,14 @@ const ModalForm = ({onFinish, monitors, setMonitors, IsEdit, editData, closeModa
   }  
 
   useEffect(() => {
+    if(formRef.current){
+      formRef.current.resetFields()
+    }
     if(IsEdit && editData){
       const data = Object.keys(editData).filter(x => typeAddressOptions.includes(x))[0]
       setURL(editData[data])
       setTypeOfAddress(data)
+      setPORT(editData.port)
     }
     return () => {
       if(formRef.current){
@@ -86,7 +102,7 @@ const ModalForm = ({onFinish, monitors, setMonitors, IsEdit, editData, closeModa
       onFinish={onFinishValues}
       ref={formRef}
     >
-      <Form.Item label={"Title"} required>
+      <Form.Item label={"Title"} required >
         <Input placeholder={"Name of your check"} onChange={(e) => setTitle(e.target.value)} value={title}  />
       </Form.Item>
       <Form.Item label={"Type of url to check"} required>
@@ -105,8 +121,17 @@ const ModalForm = ({onFinish, monitors, setMonitors, IsEdit, editData, closeModa
           })}
         </Select>
       </Form.Item>
-      <Form.Item label={"Address"} required>
-        <Input placeholder={"Website or server address"}  onChange={(e) => setURL(e.target.value)} value={url}  />
+      <Form.Item label={typeOfAddress === "website" ? "URL": "Address"} required>
+        <Row style={{display: "flex", width:"100%", justifyContent: "space-between"}}>
+          <Col style={{display: "flex", width: typeOfAddress === "website" ? "100%": "60%"}}>
+            <Input placeholder={"Website or server address"}  onChange={(e) => setURL(e.target.value)} value={url}  />
+          </Col>
+          <Col style={{display: "flex", width: "30%"}}>
+            {typeOfAddress !== "website" ? 
+              <Input placeholder={"PORT"}  onChange={(e) => setPORT(e.target.value)} value={port}  />:null
+            }
+          </Col>
+        </Row>
       </Form.Item>
       <Form.Item label={"Interval"} required>
         <Row>

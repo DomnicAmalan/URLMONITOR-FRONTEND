@@ -18,10 +18,10 @@ const Dashboard = () => {
   const [IsEdit, setEdit] = useState(false);
   const [editData, setEditData] = useState(null);
   const [IsDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [editId, setEditId] = useState(null)
 
   const MonitorDelete = async(id) => {
     const data = await deleteMonitor(id);
-    console.log(data)
     if(data){
       const deleteItem = monitors.filter(e => e._id !== id);
       setMonitors(deleteItem)
@@ -45,6 +45,7 @@ const Dashboard = () => {
   const closeModal = () => {
     setEdit(false)
     setEditData(null);
+    setEditId(null)
     setIsModalVisible(false)
   }
 
@@ -63,11 +64,11 @@ const Dashboard = () => {
             Add new url
           </Button>
         </div>
-        <ListMonitors monitors={monitors} setMonitors={setMonitors} MonitorDelete={MonitorDelete} onFinish={() => setIsModalVisible(!isModalVisible)} setEdit={setEdit} setEditData={setEditData} />
+        <ListMonitors monitors={monitors} setMonitors={setMonitors} MonitorDelete={MonitorDelete} onFinish={() => setIsModalVisible(!isModalVisible)} setEdit={setEdit} setEditData={setEditData} setEditId={setEditId} />
       </div>
       }
       <Modal title={IsEdit ? "Add URL": "Edit URL"} visible={isModalVisible} className="modal" footer={false} onCancel={() => closeModal()} >
-        <ModalForm onFinish={() => setIsModalVisible(!isModalVisible)} monitors={monitors} setMonitors={setMonitors} IsEdit={IsEdit} editData={editData} closeModal={closeModal} setEdit={setEdit} setEditData={setEditData} />
+        <ModalForm onFinish={() => setIsModalVisible(!isModalVisible)} monitors={monitors} setMonitors={setMonitors} IsEdit={IsEdit} editData={editData} closeModal={closeModal} setEdit={setEdit} setEditData={setEditData} editId={editId} />
       </Modal>
       <Modal visible={IsDeleteModalVisible} onCancel={() => setIsDeleteModalVisible(false)}  >
         <p>Are you sure you want to delete the job?</p>

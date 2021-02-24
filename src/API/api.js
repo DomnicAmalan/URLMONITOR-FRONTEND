@@ -47,6 +47,9 @@ UserInstance.interceptors.response.use(function (response) {
     localStorageService.clearToken()
     window.location.href="/app"
   }
+  else {
+    toast("SOmething went wrong")
+  }
   return Promise.reject(error.response);
 })
 

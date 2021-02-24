@@ -5,15 +5,17 @@ import {activateMonitor} from '../../../API/monitors'
 import {useHistory} from 'react-router-dom'
 
 
-const ListMonitors = ({monitors, setMonitors, onFinish, setEdit, setEditData, MonitorDelete}) => {
+const ListMonitors = ({monitors, setMonitors, onFinish, setEdit, setEditData, MonitorDelete, setEditId}) => {
 
   const history = useHistory()
 
-  const editModal = (data) => {
+  const editModal = (data, id) => {
     setEdit(true)
     setEditData(data)
+    setEditId(id)
     onFinish()
   }
+  const typeAddressOptions = ['address', "website"];
 
   const changeStatus = async(data, idx) => {
     data.status = !data.status
@@ -32,7 +34,7 @@ const ListMonitors = ({monitors, setMonitors, onFinish, setEdit, setEditData, Mo
     {
       title: "URL",
       dataIndex: 'config',
-      render: (data) => <a href={data.website} target="_blank">{data.website}</a>,
+      render: (data) => <a href={data.website} target="_blank">{data[Object.keys(data).filter(x => typeAddressOptions.includes(x))[0]]}</a>,
       width: 250,
     },
     {
@@ -52,7 +54,7 @@ const ListMonitors = ({monitors, setMonitors, onFinish, setEdit, setEditData, Mo
       dataIndex: '_id',
       render: (data) =>
       <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-        <Button onClick={() => editModal(monitors.find(x => x._id === data).config)} >Edit</Button>
+        <Button onClick={() => editModal(monitors.find(x => x._id === data).config, data)} >Edit</Button>
         <Button onClick={() => MonitorDelete(data)}>Delete</Button>
       </div>,
        width: 200,

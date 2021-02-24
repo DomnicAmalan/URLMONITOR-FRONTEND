@@ -1,4 +1,5 @@
 import Axios from 'axios';
+import { toast } from 'react-toastify';
 import LocalStorageService from ".././helpers/LocalStorageService"; 
 
 
@@ -43,9 +44,8 @@ MonitorInstance.interceptors.response.use(function (response) {
     localStorageService.clearToken()
     window.location.href="/app"
   }
-  else{
-    localStorageService.clearToken()
-    window.location.href="/app"
+  else {
+    toast("SOmething went wrong")
   }
   return Promise.reject(error.response);
 })
@@ -78,5 +78,10 @@ export const getLogs = async(id) => {
 
 export const getMonitor = async(id) => {
   const {data} = await MonitorInstance.get(`/get-monitor/${id}`)
+  return data
+}
+
+export const editMonitor = async(id, req) => {
+  const {data} = await MonitorInstance.post(`/update-monitor/${id}`, req)
   return data
 }
