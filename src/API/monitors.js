@@ -7,7 +7,7 @@ const localStorageService = LocalStorageService.getService();
 const BACKEND_BASE_URL = process.env.BACKEND_BASE_URL;
 
 const MonitorInstance = Axios.create({
-  baseURL: BACKEND_BASE_URL + 'api/monitor'
+  baseURL: BACKEND_BASE_URL + '/api/monitor'
 })
 
 MonitorInstance.interceptors.request.use(
@@ -61,6 +61,7 @@ export const listMonitors = async(req) => {
 }
 
 export const deleteMonitor = async(id) => {
+  console.log(id)
   const {data} = await MonitorInstance.delete(`/delete-monitor/${id}`)
   return data
 }

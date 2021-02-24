@@ -20,7 +20,8 @@ const Dashboard = () => {
   const [IsDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
   const MonitorDelete = async(id) => {
-    const data = await deleteMonitor(id)
+    const data = await deleteMonitor(id);
+    console.log(data)
     if(data){
       const deleteItem = monitors.filter(e => e._id !== id);
       setMonitors(deleteItem)
@@ -47,9 +48,6 @@ const Dashboard = () => {
     setIsModalVisible(false)
   }
 
-  const deleteMonitor = (id) => {
-
-  }
 
   return (
     <div className="dashboard-container">
