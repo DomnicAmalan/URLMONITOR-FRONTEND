@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import LocalStorageService from ".././helpers/LocalStorageService"; 
-
+import { toast } from 'react-toastify';
 
 const localStorageService = LocalStorageService.getService();
 

@@ -44,7 +44,8 @@
     "react-toastify": "^7.0.3",
     "react-top-loading-bar": "^2.0.1",
     "sass-loader": "^10.1.1",
-    "style-loader": "^2.0.0"
+    "style-loader": "^2.0.0",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

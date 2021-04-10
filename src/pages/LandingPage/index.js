@@ -33,6 +33,7 @@ const Landingpage = ({history}) => {
         setEmail(user.email)
         setProgress(30)
         const check = await checkUser({email: user.email});
+        console.log(check)
         if(check){
           setProgress(50);
           const data = await authenticate({email: user.email})

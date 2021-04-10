@@ -5,6 +5,17 @@ import JSONInput from 'react-json-editor-ajrm';
 import locale    from 'react-json-editor-ajrm/locale/en';
 import {addMonitor, editMonitor} from '../../../API/monitors'
 import { toast } from 'react-toastify';
+import * as yup from 'yup';
+
+let schema = yup.object().shape({
+  typeOfAddress: yup.string().required(),
+  url: yup.string().url().required(),
+  title: yup.string().min(4).required(),
+  // port: yup.number().min(4),
+  intervalUnits: yup.string().required(),
+  expectedStatusCode: yup.number(3).required(),
+  interval: yup.string().required(),
+});
 
 const ModalForm = ({onFinish, monitors, setMonitors, IsEdit, editData, closeModal, setEdit, editId }) => {
 
@@ -22,28 +33,18 @@ const ModalForm = ({onFinish, monitors, setMonitors, IsEdit, editData, closeModa
   const [expectedStatusCode, setExpectedStatusCode] = useState(200);
   const [interval, setInterval] = useState(IsEdit ? editData.interval : 5);
   const [httpOptionsGet, setHttpOptionsGet] = useState(false);
-
-  const validations = [
-      {value: typeOfAddress, type: String, required: true},
-      {value: url, type: String, required: true},
-      {value: title, type: String, required: true},
-      {value: port, type: String, required: false},
-      {value: intervalUnits, type: String, required: true},
-      {value: httpOptions, type: String, required: httpOptionsGet},
-      {value: expectedStatusCode, type: String, required: true},
-      {value: interval, type: String, required: true}
-  ]
-
-  const Validate = () => {
-    const typeString = validations.filter(data =>  data.type === String && !Boolean(data.value) && data.required);
-    const typeArray = validations.filter(data => data.type === Array && !data.value.length && data.required);
-    const typeObject = validations.filter(data => data.type === "KeyValueObject" && !data.value.fileData && data.required);
-  
-    return Boolean(!typeString.length) && Boolean(!typeArray.length)  && Boolean(!typeObject.length)
-  }
   
   const onFinishValues = async(values) => {
-    if(Validate()){
+    schema.validate({ 
+      typeOfAddress,
+      url,
+      title,
+      port,
+      intervalUnits,
+      expectedStatusCode,
+      interval,
+    })
+    .then(async resp => {
       const data = {
         [typeOfAddress]: url,
         confing: {
@@ -55,28 +56,21 @@ const ModalForm = ({onFinish, monitors, setMonitors, IsEdit, editData, closeModa
           statusCode: expectedStatusCode
         }
       }
-      if(httpOptionsGet){
-        data.httpOptions(setHttpOptions)
-      }
-      if(typeOfAddress === "address"){
-        data.port = port
-      }
-      if(IsEdit){
-        const {monitor} = await editMonitor(editId, data);
-        const updateIndex = monitors.findIndex(x => x._id ===editId)
-        monitors[updateIndex] = monitor
-        setMonitors(monitors);
-      }
-      else{
-        const resp = await addMonitor(data);
+      addMonitor(data)
+      .then((resp) => {
         setMonitors([...monitors, resp.monitor]);
-      }
+        onFinish();
+      })
+      .catch(
+        toast("Failed")
+      )
       
-      onFinish();
-    }
-    else {
-      toast("Please fill in required fields")
-    }
+    })
+    .catch(function (err) {
+      console.log(err)
+      err.name; // => 'ValidationError'
+      err.errors; // => ['Deve ser maior que 18']
+    });
     
   }  
 
