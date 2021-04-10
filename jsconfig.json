@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "allowSyntheticDefaultImports": false,
+    "baseUrl": "./",
+    "paths": {
+      "Assets": ["path.resolve(__dirname, './src/assets')"],
+      "atoms": ["path.resolve(__dirname, './src/components/atoms/index')"],
+      "hooks": ["path.resolve(__dirname, './src/hooks/index')"],
+      "pages": ["path.resolve(__dirname, './src/pages')"],
+      "layouts": ["path.resolve(__dirname, './src/Layout/GuestLayout')"],
+      "molecules": ["path.resolve(__dirname, './src/components/molecules/index')"]
+    }
+  },
+  "exclude": ["dist", "docs"],
+  "include": ["src"],
+}

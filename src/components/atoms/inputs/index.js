@@ -1,6 +1,6 @@
 import React from 'react'
 import { Input, Space } from 'antd';
-import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons-svg';
 
 const Password = ({onChange}) => {
   return (
