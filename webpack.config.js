@@ -7,7 +7,8 @@ const dotenv = require('dotenv').config({ path: `${__dirname}/.env` });
 
 const htmlPlugin = new HtmlWebPackPlugin({
   template: './dist/index.html',
-  filename: './index.html'
+  filename: './index.html',
+  favicon: "./public/sparrow-head.svg"
 });
 
 const dotEnvPlugin = new webpack.DefinePlugin({
@@ -70,7 +71,7 @@ module.exports = {
       atoms: path.resolve(__dirname, './src/components/atoms/index'),
       hooks: path.resolve(__dirname, './src/hooks/index'),
       pages: path.resolve(__dirname, './src/pages'),
-      layouts: path.resolve(__dirname, './src/Layout/GuestLayout'),
+      layouts: path.resolve(__dirname, './src/layouts'),
       molecules: path.resolve(__dirname, './src/components/molecules/index'),
     },
   },

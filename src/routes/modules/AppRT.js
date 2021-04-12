@@ -1,6 +1,7 @@
 import LandingPage from 'pages/LandingPage';
-import Dashboard from 'pages/Dashboard';
-import Logs from 'pages/Logs'
+import SignUp from 'pages/LandingPage/SignUp'
+import SignIn from 'pages/LandingPage/SignIn'
+import Dashboard from 'pages/Dashboard'
 
 const prefix = '/app';
 
@@ -11,13 +12,18 @@ const routes = [
     exact: true,
   },
   {
-    path: `${prefix}/dashboard`,
-    component: Dashboard,
+    path: `${prefix}/signin`,
+    component: SignIn,
     exact: true,
   },
   {
-    path: `${prefix}/logs`,
-    component: Logs,
+    path: `${prefix}/signup`,
+    component: SignUp,
+    exact: true,
+  },
+  {
+    path: `${prefix}/dashboard`,
+    component: Dashboard,
     exact: true,
   },
 ];
