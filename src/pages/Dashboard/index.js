@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   makeStyles,
   Container,
@@ -10,6 +10,7 @@ import {colors} from '../../configs/colors'
 import AddModal from './AddModal'
 import RightDrawer from '../../components/RightDrawer';
 import ListMonitors from './ListModal';
+import {listMonitors} from '../../API/monitors';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,18 +31,23 @@ const useStyles = makeStyles((theme) => ({
 const Dashboard = () => {
   
   const classes = useStyles();
+  const [monitors, setMonitors] = useState([])
   
   const [openDrawer, setOpenDrawer] = React.useState(false);
-
+  const [editData, setEditData] = useState(null)
   const toggleDrawer = () => {
-    // if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-    //   return;
-    // }
-
     setOpenDrawer(!openDrawer);
   };
 
-  console.log(openDrawer)
+
+  const getData = async() => {
+    const resp = await listMonitors();
+    setMonitors(resp)
+  }
+
+  useEffect(() => {
+    getData()
+  }, [])
 
   return (
     <Container 
@@ -68,9 +74,9 @@ const Dashboard = () => {
         </Button>
       </Box>
       <RightDrawer open={openDrawer} toggle={toggleDrawer} className={classes.drawer}>
-        <AddModal />
+        <AddModal monitors={monitors} setMonitors={setMonitors} editMenu={setOpenDrawer} editData={editData} />
       </RightDrawer>
-      <ListMonitors />
+      <ListMonitors monitors={monitors} setMonitors={setMonitors} editMenu={setOpenDrawer} setEditData={setEditData} />
     </Container>
   )
 }

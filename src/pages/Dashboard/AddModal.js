@@ -77,19 +77,30 @@ const validationSchema = Yup.object({
   expectedCode: Yup.number().test('len', 'Must be exactly 3 characters', val => val.toString().length === 3)
 })
 
-const AddModal = () => {
+const AddModal = ({editData, editMenu, monitors, setMonitors}) => {
   const classes = useStyles();
 
   const handleSubmit = async(value, submit) => {
-    submit(true)
-    const resp = await addMonitor(value)
-    console.log(resp)
-    submit(false)
+    if(!editData){
+      submit(true)
+      const {monitor} = await addMonitor(value)
+      submit(false)
+      setMonitors([...monitors, monitor])
+    }
+    else {
+      submit(true)
+      const {monitor} = await editMonitor(editData._id, value)
+      const updateItem = monitors.findIndex(e => e._id === editData._id);
+      monitors[updateItem] = monitor,
+      setMonitors(monitors)
+      submit(false)
+    }
+    editMenu(false)
   }
   const typesoptions = ['api', 'website', 'server'];
 
   const SwitchComponents = (type) => {
-    console.log(type)
+    
     switch(type) {
       case 'api':
         return "https://api.test.com/v1"
@@ -99,7 +110,34 @@ const AddModal = () => {
         return "https://192.168.0.1"
     }
   }
-
+  console.log(editData)
+  const initialValues = () => {
+    if(editData){
+      let value = editData.config
+      return value
+    }
+    else {
+      let returnData = { 
+        name: "", 
+        type: "", 
+        ssl: false, 
+        cron: "",
+        address: "",
+        httpOptions: {
+          path: '{RELATIVE_PATH}',
+          method: '{GET, PUT, POST, DELETE}',
+          query: {first_name: 'Ping', last_name: "Pong"},
+          body: {
+            data: "Test"
+          } 
+        },
+        port: null,
+        portneeded: false
+      }
+      return returnData
+    }
+  }
+  console.log(initialValues())
 
 
   return (
@@ -114,23 +152,7 @@ const AddModal = () => {
         </Typography>
         <div className={classes.form}>
         <Formik
-          initialValues={{ 
-            name: "sdsds", 
-            type: "website", 
-            ssl: false, 
-            cron: "5 * * * *",
-            address: "http://www.google.com",
-            httpOptions: {
-              path: '{RELATIVE_PATH}',
-              method: '{GET, PUT, POST, DELETE}',
-              query: {first_name: 'Ping', last_name: "Pong"},
-              body: {
-                data: "Test"
-              } 
-            },
-            port: null,
-            portneeded: false
-          }}
+          initialValues={initialValues()}
           validationSchema={validationSchema}
           onSubmit={(values, {setSubmitting}) => handleSubmit(values, setSubmitting)}
         >

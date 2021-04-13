@@ -11,11 +11,14 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import {listMonitors, deleteMonitor, activateMonitor} from '../../API/monitors';
+import {activateEmail, deleteMonitor, activateMonitor} from '../../API/monitors';
 import UpdateIcon from '@material-ui/icons/Update';
 import {green, red, blue} from '@material-ui/core/colors';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+var cronstrue = require('cronstrue');
+import Chip from '@material-ui/core/Chip';
+import {useHistory} from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,16 +56,19 @@ const columns = [
   { id: 'name', label: 'Name', minWidth: 170 },
   { id: 'address', label: 'Address', minWidth: 170 },
   { id: 'status', label: 'Status', minWidth: 100 },
+  { id: 'scheduledAt', label: 'Scheduler', minWidth: 100 },
   { id: 'logs', label: 'Logs', minWidth: 50 },
-  { id: 'actions', label: 'Actions', minWidth: 100 }
+  { id: 'actions', label: 'Actions', minWidth: 100 },
+  // TODO
+  // { id: 'mail', label: 'Activate Mail', minWidth: 100 }
 ];
 
-const ListMonitors = ( )=> {
+const ListMonitors = ({monitors, setMonitors, editMenu, setEditData})=> {
   const classes = useStyles();
-  const [rows, setData] = useState([])
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
+  const history = useHistory()
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -72,44 +78,62 @@ const ListMonitors = ( )=> {
     setPage(0);
   };
 
-  useEffect(() => {
-    getData()
-  }, [])
+  const MonitorDelete = async(id) => {
+    const data = await deleteMonitor(id);
+    if(data){
+      const deleteItem = monitors.filter(e => e._id !== id);
+      setMonitors(deleteItem)
+    }
+    else{
+      toast("Failed to delete")
+    }
+  }
+
+  const setEdit = (data) => {
+    setEditData(data)
+    editMenu(true)
+  }
 
   const changeStatus = async(idx, id, status) => {
-    console.log(idx, status)
-    let temp = [...rows]
-    temp[idx].status = status
-    setData(temp)
-    const resp = await activateMonitor(id, status)
+    let temp = [...monitors]
+    const {monitor} = await activateMonitor(id, status)
+    console.log(monitor)
+    temp[idx].status = monitor.status
+    setMonitors(temp)
+  }
+
+  const changeMailStatus = async(idx, id, status) => {
+    let temp = [...monitors]
+    const {monitor} = await activateEmail(id, status)
+    temp[idx].sendmail = monitor.sendmail
+    setMonitors(temp)
   }
 
   const createData = () => {
     let value = []
-    rows.forEach((item, idx) => {
+    monitors.forEach((item, idx) => {
       const {config} = item
       value.push(
         { 
           name: config.name, 
           address: <Link href={config.address} variant="body2" target="_blank">{config.address}</Link>, 
           status: <Switch onChange={(e) => changeStatus(idx, item._id, !item.status)} checked={item.status} /> ,
-          logs: <UpdateIcon className={classes.logIcon} onClick={() => console.log("red")} />,
+          logs: <UpdateIcon className={classes.logIcon} onClick={() => console.log("red")} onClick={() => history.push(`/app/logs/?id=${item._id}`)} />,
           actions: 
           <Box
             className={classes.actionContainer}
           >
-            <EditIcon className={classes.EditIcon} />
-            <DeleteForeverIcon className={classes.deleteIcon} />
-          </Box>
+            <EditIcon className={classes.EditIcon} onClick={() => setEdit(item)} />
+            <DeleteForeverIcon className={classes.deleteIcon} onClick={() => MonitorDelete(item._id)} />
+          </Box>,
+          scheduledAt: <Chip color="primary" label={cronstrue.toString(config.cron)} />,
+          // TODO
+          // mail: <Switch onChange={(e) => changeMailStatus(idx, item._id, !item.sendmail)} checked={item.sendmail} /> ,
+
         }
       )
     })
     return value
-  }
-
-  const getData = async() => {
-    const resp = await listMonitors();
-    setData(resp)
   }
 
   return (
@@ -150,7 +174,7 @@ const ListMonitors = ( )=> {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={rows.length}
+        count={monitors.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onChangePage={handleChangePage}
