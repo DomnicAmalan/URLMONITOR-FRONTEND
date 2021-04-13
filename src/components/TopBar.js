@@ -18,11 +18,11 @@ const useStyles = makeStyles((theme) => ({
   },
   menuButton: {
     marginRight: theme.spacing(2),
-    color: colors.black
+    color: theme.palette.primary.main
   },
   title: {
     flexGrow: 1,
-    color: colors.black
+    color: theme.palette.primary.secondary
   },
   AppBar: {
     backgroundColor: colors.yellow

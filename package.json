@@ -27,6 +27,7 @@
     "@material-ui/icons": "^4.11.2",
     "axios": "^0.21.1",
     "babel-loader": "^8.2.2",
+    "cronstrue": "^1.111.0",
     "css-loader": "^5.0.1",
     "dotenv": "^6.2.0",
     "ejs": "^3.1.6",
@@ -46,7 +47,6 @@
     "react-toastify": "^7.0.3",
     "react-top-loading-bar": "^2.0.1",
     "sass-loader": "^10.1.1",
-    "sleep": "^6.3.0",
     "style-loader": "^2.0.0",
     "yup": "^0.32.9"
   },
