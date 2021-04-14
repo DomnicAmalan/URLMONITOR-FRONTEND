@@ -1,9 +1,9 @@
 import AppRoute from './modules/AppRT';
-import Guestlayout from 'layouts'
+import MainLayout from 'layouts/Main'
 
 const listRoutes = [
   {
-    layout: Guestlayout,
+    layout: MainLayout,
     routes: [...AppRoute],
   },
 ];
