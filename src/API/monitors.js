@@ -71,6 +71,11 @@ export const activateMonitor = async(id, status) => {
   return data
 }
 
+export const activateEmail = async(id, status) => {
+  const {data} = await MonitorInstance.post(`/sendmail-activate/${id}`, {sendmail: status})
+  return data
+}
+
 export const getLogs = async(id) => {
   const {data} = await MonitorInstance.get(`/get-logs/${id}`)
   return data
